@@ -120,9 +120,11 @@ const Messages = () => {
             </button>
 
             <div className="mb-8">
-                <h1 className="text-4xl font-black text-slate-900 mb-2">Messages</h1>
+                <h1 className="text-4xl font-black text-slate-900 mb-2">Inbox</h1>
                 <p className="text-slate-500 font-medium">
-                    {unreadCount > 0 ? `You have ${unreadCount} unread message${unreadCount > 1 ? 's' : ''}` : 'All caught up!'}
+                    {unreadCount > 0 
+                        ? `You have ${unreadCount} unread message${unreadCount > 1 ? 's' : ''} from potential buyers` 
+                        : 'All caught up! No new inquiries.'}
                 </p>
             </div>
 
@@ -160,9 +162,11 @@ const Messages = () => {
                         {messages.length === 0 ? (
                             <div className="p-12 text-center">
                                 <Mail className="w-16 h-16 text-slate-200 mx-auto mb-4" />
-                                <h3 className="text-lg font-black text-slate-900 mb-2">No messages</h3>
+                                <h3 className="text-lg font-black text-slate-900 mb-2">No messages yet</h3>
                                 <p className="text-slate-500 text-sm font-medium">
-                                    {filter === 'unread' ? 'All messages have been read' : 'You haven\'t received any messages yet'}
+                                    {filter === 'unread' 
+                                        ? 'All messages have been read' 
+                                        : 'You haven\'t received any inquiries yet. When buyers contact you about your products, they\'ll appear here.'}
                                 </p>
                             </div>
                         ) : (
@@ -247,7 +251,7 @@ const Messages = () => {
                                 {/* Product Info */}
                                 <div className="bg-white rounded-2xl p-4 border border-slate-100">
                                     <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-2">
-                                        Regarding Product
+                                        Inquiry About
                                     </p>
                                     <div className="flex items-center gap-2">
                                         <Package className="w-4 h-4 text-blue-600" />
@@ -264,11 +268,16 @@ const Messages = () => {
                             {/* Message Content */}
                             <div className="flex-1 p-8 overflow-y-auto">
                                 <h3 className="text-sm font-black text-slate-700 uppercase tracking-widest mb-4">
-                                    Message
+                                    Buyer's Message
                                 </h3>
                                 <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100">
                                     <p className="text-slate-700 leading-relaxed font-medium whitespace-pre-wrap">
                                         {selectedMessage.content}
+                                    </p>
+                                </div>
+                                <div className="mt-4 p-4 bg-blue-50 rounded-xl border border-blue-100">
+                                    <p className="text-xs text-blue-600 font-bold">
+                                        💡 Tip: Reply via email to continue the conversation with this potential buyer.
                                     </p>
                                 </div>
                             </div>
@@ -281,7 +290,7 @@ const Messages = () => {
                                             onClick={() => setShowReplyForm(true)}
                                             className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-black py-4 px-8 rounded-2xl shadow-2xl shadow-blue-100 transition-all transform active:scale-95"
                                         >
-                                            Reply to Buyer
+                                            Reply via Email
                                         </button>
                                         <button
                                             onClick={() => navigate(`/products/${selectedMessage.productId}`)}
