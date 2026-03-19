@@ -1,0 +1,66 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: marketbridge
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/marketplace_db
+    username: postgres
+    password: 19941221ka@@
+  
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # Email Configuration (Gmail SMTP)
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:your-email@gmail.com}
+    password: ${MAIL_PASSWORD:your-app-password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+# Security Configuration
+app:
+  jwt:
+    secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    expiration-ms: 86400000 # 24 hours
+  ai:
+    api-key: ${AI_API_KEY:PLACEHOLDER_KEY}
+    model: ${AI_MODEL:gpt-3.5-turbo}
+    api-url: https://api.openai.com/v1/chat/completions
+
+# Registration Fee Configuration
+registration:
+  fee:
+    buyer: 10.00
+    seller: 50.00
+
+# Chapa Payment Gateway Configuration
+chapa:
+  secret-key: CHASECK_TEST-DEQ1BOjsE3FM4fNfG5qalijqTxfl2hmm
+  public-key: CHAPUBK_TEST-v7Uhcr9yvOya2wVxRLtu6thwfsYng2Ah
+  encryption-key: wvoiBRNkGDb0GeTNDjHzPsTQ
+  api-url: https://api.chapa.co/v1
+  callback-url: http://localhost:5174/registration-verify
+  return-url: http://localhost:5174/registration-verify
+
+# File Upload Configuration
+file:
+  upload-dir: uploads

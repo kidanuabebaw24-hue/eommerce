@@ -7,7 +7,27 @@ import toast from 'react-hot-toast';
 
 const ProductCard = ({ product }) => {
     const { id, title, price, categoryName, ownerUsername, location, imageUrls } = product;
-    const mainImage = imageUrls && imageUrls.length > 0 ? `http://localhost:8080${imageUrls[0]}` : 'https://placehold.co/600x400/e2e8f0/64748b?text=No+Image';
+    
+    // Better fallback image based on category
+    const getCategoryPlaceholder = (category) => {
+        const placeholders = {
+            'Car': 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&h=400&fit=crop',
+            'Home & Garden': 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop',
+            'Electronics': 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=600&h=400&fit=crop',
+            'Fashion': 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=600&h=400&fit=crop',
+            'Sports & Outdoors': 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=600&h=400&fit=crop',
+            'Services': 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=600&h=400&fit=crop'
+        };
+        return placeholders[category] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=400&fit=crop';
+    };
+    
+    const mainImage = imageUrls && imageUrls.length > 0 
+        ? `http://localhost:8080${imageUrls[0]}` 
+        : getCategoryPlaceholder(categoryName);
+    
+    const [imgError, setImgError] = useState(false);
+    const fallbackImage = getCategoryPlaceholder(categoryName);
+    
     const { user } = useAuth();
     const [isFavorited, setIsFavorited] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -61,8 +81,9 @@ const ProductCard = ({ product }) => {
             {/* Image Section */}
             <div className="relative aspect-[4/3] overflow-hidden">
                 <img
-                    src={mainImage}
+                    src={imgError ? fallbackImage : mainImage}
                     alt={title}
+                    onError={() => setImgError(true)}
                     className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute top-4 left-4">

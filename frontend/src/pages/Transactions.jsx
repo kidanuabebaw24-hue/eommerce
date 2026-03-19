@@ -17,13 +17,20 @@ const Transactions = () => {
     const fetchTransactions = async () => {
         try {
             const [purchasesData, salesData] = await Promise.all([
-                transactionService.getMyPurchases(),
-                transactionService.getMySales()
+                transactionService.getMyPurchases().catch(err => {
+                    console.error('Purchases error:', err.response?.data || err.message);
+                    return [];
+                }),
+                transactionService.getMySales().catch(err => {
+                    console.error('Sales error:', err.response?.data || err.message);
+                    return [];
+                })
             ]);
             setPurchases(purchasesData);
             setSales(salesData);
         } catch (err) {
-            toast.error('Failed to load transactions');
+            console.error('Transaction fetch error:', err);
+            toast.error(err.response?.data?.message || 'Failed to load transactions');
         } finally {
             setLoading(false);
         }

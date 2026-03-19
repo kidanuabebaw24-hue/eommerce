@@ -25,12 +25,30 @@ const markAsRead = async (messageId) => {
     return response.data;
 };
 
+const getAllMessages = async () => {
+    const response = await api.get('/messages/all');
+    return response.data;
+};
+
+const getMessageStats = async () => {
+    const response = await api.get('/messages/stats');
+    return response.data;
+};
+
+const deleteMessage = async (messageId) => {
+    const response = await api.delete(`/messages/${messageId}`);
+    return response.data;
+};
+
 const messageService = {
     sendMessage,
     getMyMessages,
     getUnreadMessages,
     getUnreadCount,
     markAsRead,
+    getAllMessages,
+    getMessageStats,
+    deleteMessage,
 };
 
 export default messageService;

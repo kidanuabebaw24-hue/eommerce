@@ -2,13 +2,16 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import NonAdminRoute from './components/NonAdminRoute';
 import MainLayout from './components/MainLayout';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import RegistrationPayment from './pages/RegistrationPayment';
+import RegistrationVerify from './pages/RegistrationVerify';
+import CompleteRegistration from './pages/CompleteRegistration';
 import ProductList from './pages/ProductList';
 import ProductDetails from './pages/ProductDetails';
 import CreateProduct from './pages/CreateProduct';
-import Dashboard from './pages/Dashboard';
 import Messages from './pages/Messages';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminRoute from './components/AdminRoute';
@@ -16,6 +19,7 @@ import Wishlist from './pages/Wishlist';
 import UserProfile from './pages/UserProfile';
 import Transactions from './pages/Transactions';
 import AdminAnalytics from './pages/AdminAnalytics';
+import AdminMessages from './pages/AdminMessages';
 import { Toaster } from 'react-hot-toast';
 import ErrorBoundary from './components/ErrorBoundary';
 
@@ -49,6 +53,9 @@ function App() {
             {/* Auth Routes - No Layout */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/registration-payment" element={<RegistrationPayment />} />
+            <Route path="/registration-verify" element={<RegistrationVerify />} />
+            <Route path="/complete-registration" element={<CompleteRegistration />} />
 
             {/* Public Routes - With MainLayout */}
             <Route
@@ -84,23 +91,14 @@ function App() {
             />
 
             <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <MainLayout>
-                    <Dashboard />
-                  </MainLayout>
-                </ProtectedRoute>
-              }
-            />
-
-            <Route
               path="/create-product"
               element={
                 <ProtectedRoute>
-                  <MainLayout>
-                    <CreateProduct />
-                  </MainLayout>
+                  <NonAdminRoute>
+                    <MainLayout>
+                      <CreateProduct />
+                    </MainLayout>
+                  </NonAdminRoute>
                 </ProtectedRoute>
               }
             />
@@ -109,9 +107,11 @@ function App() {
               path="/messages"
               element={
                 <ProtectedRoute>
-                  <MainLayout>
-                    <Messages />
-                  </MainLayout>
+                  <NonAdminRoute>
+                    <MainLayout>
+                      <Messages />
+                    </MainLayout>
+                  </NonAdminRoute>
                 </ProtectedRoute>
               }
             />
@@ -120,9 +120,11 @@ function App() {
               path="/wishlist"
               element={
                 <ProtectedRoute>
-                  <MainLayout>
-                    <Wishlist />
-                  </MainLayout>
+                  <NonAdminRoute>
+                    <MainLayout>
+                      <Wishlist />
+                    </MainLayout>
+                  </NonAdminRoute>
                 </ProtectedRoute>
               }
             />
@@ -131,9 +133,11 @@ function App() {
               path="/profile"
               element={
                 <ProtectedRoute>
-                  <MainLayout>
-                    <UserProfile />
-                  </MainLayout>
+                  <NonAdminRoute>
+                    <MainLayout>
+                      <UserProfile />
+                    </MainLayout>
+                  </NonAdminRoute>
                 </ProtectedRoute>
               }
             />
@@ -142,9 +146,11 @@ function App() {
               path="/transactions"
               element={
                 <ProtectedRoute>
-                  <MainLayout>
-                    <Transactions />
-                  </MainLayout>
+                  <NonAdminRoute>
+                    <MainLayout>
+                      <Transactions />
+                    </MainLayout>
+                  </NonAdminRoute>
                 </ProtectedRoute>
               }
             />
@@ -156,6 +162,19 @@ function App() {
                   <AdminRoute>
                     <MainLayout>
                       <AdminAnalytics />
+                    </MainLayout>
+                  </AdminRoute>
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/admin/messages"
+              element={
+                <ProtectedRoute>
+                  <AdminRoute>
+                    <MainLayout>
+                      <AdminMessages />
                     </MainLayout>
                   </AdminRoute>
                 </ProtectedRoute>

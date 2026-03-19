@@ -24,7 +24,7 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (user && (user.roles?.includes('SELLER') || user.roles?.includes('ADMIN'))) {
+        if (user && user.roles?.includes('SELLER') && !user.roles?.includes('ADMIN')) {
             fetchUnreadCount();
             // Poll for new messages every 30 seconds
             const interval = setInterval(fetchUnreadCount, 30000);
@@ -80,7 +80,7 @@ const Navbar = () => {
                             Discover
                         </Link>
 
-                        {user && (
+                        {user && !user.roles?.includes('ADMIN') && (
                             <>
                                 <Link to="/wishlist" className="text-slate-600 font-bold hover:text-blue-600 transition-colors flex items-center gap-2">
                                     <Heart className="w-5 h-5" />
@@ -94,7 +94,7 @@ const Navbar = () => {
                             </>
                         )}
 
-                        {(user?.roles?.includes('SELLER') || user?.roles?.includes('ADMIN')) && (
+                        {(user?.roles?.includes('SELLER') && !user?.roles?.includes('ADMIN')) && (
                             <Link to="/messages" className="relative text-slate-600 font-bold hover:text-blue-600 transition-colors flex items-center gap-2">
                                 <Mail className="w-5 h-5" />
                                 <span>Messages</span>
@@ -112,13 +112,16 @@ const Navbar = () => {
                                     <ShieldCheck className="w-5 h-5 text-blue-600" />
                                     <span>Admin</span>
                                 </Link>
+                                <Link to="/admin/messages" className="text-slate-600 font-bold hover:text-blue-600 transition-colors">
+                                    Messages
+                                </Link>
                                 <Link to="/admin/analytics" className="text-slate-600 font-bold hover:text-blue-600 transition-colors">
                                     Analytics
                                 </Link>
                             </>
                         )}
 
-                        {(user?.roles?.includes('SELLER') || user?.roles?.includes('ADMIN')) && (
+                        {(user?.roles?.includes('SELLER') && !user?.roles?.includes('ADMIN')) && (
                             <Link
                                 to="/create-product"
                                 className="flex items-center gap-2 bg-blue-50 text-blue-600 font-bold py-2.5 px-4 rounded-xl hover:bg-blue-100 transition-all active:scale-95"
@@ -132,7 +135,7 @@ const Navbar = () => {
 
                         {user ? (
                             <div className="flex items-center gap-4">
-                                <Link to="/dashboard" className="flex flex-col items-end group">
+                                <Link to={user?.roles?.includes('ADMIN') ? "/admin" : "/"} className="flex flex-col items-end group">
                                     <span className="text-sm font-black text-slate-900 leading-tight group-hover:text-blue-600 transition-colors">
                                         {user?.username}
                                     </span>
@@ -140,9 +143,11 @@ const Navbar = () => {
                                         {user?.roles?.[0]} Account
                                     </span>
                                 </Link>
-                                <Link to="/profile" className="bg-slate-100 rounded-xl p-2 cursor-pointer hover:bg-slate-200 transition-colors">
-                                    <User className="text-slate-600 w-6 h-6" />
-                                </Link>
+                                {!user?.roles?.includes('ADMIN') && (
+                                    <Link to="/profile" className="bg-slate-100 rounded-xl p-2 cursor-pointer hover:bg-slate-200 transition-colors">
+                                        <User className="text-slate-600 w-6 h-6" />
+                                    </Link>
+                                )}
                                 <button
                                     onClick={handleLogout}
                                     className="text-slate-400 hover:text-red-500 transition-colors"
@@ -193,7 +198,7 @@ const Navbar = () => {
                     >
                         Discover
                     </Link>
-                    {user && (
+                    {user && !user.roles?.includes('ADMIN') && (
                         <>
                             <Link
                                 to="/wishlist"
@@ -221,7 +226,7 @@ const Navbar = () => {
                             </Link>
                         </>
                     )}
-                    {(user?.roles?.includes('SELLER') || user?.roles?.includes('ADMIN')) && (
+                    {(user?.roles?.includes('SELLER') && !user?.roles?.includes('ADMIN')) && (
                         <Link
                             to="/messages"
                             className="flex items-center justify-between py-3 px-4 rounded-xl hover:bg-slate-50 font-bold text-slate-600"
@@ -249,6 +254,13 @@ const Navbar = () => {
                                 Admin
                             </Link>
                             <Link
+                                to="/admin/messages"
+                                className="block py-3 px-4 rounded-xl hover:bg-slate-50 font-bold text-slate-600"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                Messages
+                            </Link>
+                            <Link
                                 to="/admin/analytics"
                                 className="block py-3 px-4 rounded-xl hover:bg-slate-50 font-bold text-slate-600"
                                 onClick={() => setIsOpen(false)}
@@ -257,7 +269,7 @@ const Navbar = () => {
                             </Link>
                         </>
                     )}
-                    {(user?.roles?.includes('SELLER') || user?.roles?.includes('ADMIN')) && (
+                    {(user?.roles?.includes('SELLER') && !user?.roles?.includes('ADMIN')) && (
                         <Link
                             to="/create-product"
                             className="block py-3 px-4 rounded-xl bg-blue-600 text-white font-bold"
@@ -266,13 +278,15 @@ const Navbar = () => {
                             Sell Item
                         </Link>
                     )}
-                    <button
-                        onClick={handleLogout}
-                        className="w-full flex items-center gap-2 py-3 px-4 rounded-xl hover:bg-red-50 text-red-600 font-bold"
-                    >
-                        <LogOut className="w-5 h-5" />
-                        Sign Out
-                    </button>
+                    {user && (
+                        <button
+                            onClick={handleLogout}
+                            className="w-full flex items-center gap-2 py-3 px-4 rounded-xl hover:bg-red-50 text-red-600 font-bold"
+                        >
+                            <LogOut className="w-5 h-5" />
+                            Sign Out
+                        </button>
+                    )}
                 </div>
             )}
         </nav>
