@@ -36,17 +36,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/v1/registration-payment/**").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/products/**").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/categories/**").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/reviews/**").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/profile/user/**").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/profile/top-sellers").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/profile/verified-sellers").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/favorites/*/count").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/v1/messages").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/v1/payments/verify").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/v1/payments/callback").permitAll()
-                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/v1/registration-payment/webhook/**").permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/**").permitAll() 
                         .requestMatchers("/uploads/**").permitAll()
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/analytics/**").hasRole("ADMIN")
@@ -64,9 +54,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174"));
+        configuration.setAllowedOriginPatterns(List.of("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Cache-Control", "X-Requested-With"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
         configuration.setExposedHeaders(List.of("Authorization"));
         

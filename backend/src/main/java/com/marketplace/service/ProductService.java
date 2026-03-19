@@ -68,13 +68,25 @@ public class ProductService {
         return mapToResponse(savedProduct);
     }
 
-    public List<ProductResponse> getAllProducts(int page, int size) {
+    @Transactional(readOnly = true)
+    public List<ProductResponse> getAllProducts(String search, String categoryName, int page, int size) {
         org.springframework.data.domain.Pageable pageable = org.springframework.data.domain.PageRequest.of(page, size);
-        return productRepository.findAll(pageable).getContent().stream()
+        
+        List<Product> products;
+        if (search != null && !search.isEmpty()) {
+            products = productRepository.findByTitleContainingIgnoreCase(search, pageable).getContent();
+        } else if (categoryName != null && !categoryName.isEmpty()) {
+            products = productRepository.findByCategory_Name(categoryName, pageable).getContent();
+        } else {
+            products = productRepository.findAll(pageable).getContent();
+        }
+
+        return products.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<ProductResponse> getProductsByOwner(String username) {
         User owner = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -83,6 +95,7 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public ProductResponse getProductById(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
