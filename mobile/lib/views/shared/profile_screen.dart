@@ -5,6 +5,8 @@ import 'package:animate_do/animate_do.dart';
 import '../../core/theme/app_colors.dart';
 import '../../providers/auth_provider.dart';
 import '../auth/login_screen.dart';
+import '../buyer/wishlist_screen.dart';
+import 'personal_info_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -60,12 +62,36 @@ class ProfileScreen extends ConsumerWidget {
               FadeInUp(
                 child: Column(
                   children: [
-                    _ProfileTile(icon: LucideIcons.user, title: 'Personal Information', onTap: () {}),
-                    _ProfileTile(icon: LucideIcons.shoppingBag, title: 'My Orders', onTap: () {}),
-                    _ProfileTile(icon: LucideIcons.heart, title: 'Wishlist', onTap: () {}),
-                    _ProfileTile(icon: LucideIcons.bell, title: 'Notifications', onTap: () {}),
-                    _ProfileTile(icon: LucideIcons.shieldCheck, title: 'Security', onTap: () {}),
-                    _ProfileTile(icon: LucideIcons.helpCircle, title: 'Help Center', onTap: () {}),
+                    _ProfileTile(
+                      icon: LucideIcons.user,
+                      title: 'Personal Information',
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PersonalInfoScreen())),
+                    ),
+                    _ProfileTile(
+                      icon: LucideIcons.shoppingBag,
+                      title: 'My Orders',
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const OrdersScreen())),
+                    ),
+                    _ProfileTile(
+                      icon: LucideIcons.heart,
+                      title: 'Wishlist',
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const WishlistScreen())),
+                    ),
+                    _ProfileTile(
+                      icon: LucideIcons.bell,
+                      title: 'Notifications',
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationsScreen())),
+                    ),
+                    _ProfileTile(
+                      icon: LucideIcons.shieldCheck,
+                      title: 'Security',
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SecurityScreen())),
+                    ),
+                    _ProfileTile(
+                      icon: LucideIcons.helpCircle,
+                      title: 'Help Center',
+                      onTap: () => _showComingSoon(context, 'Help Center'),
+                    ),
                     const SizedBox(height: 24),
                     _ProfileTile(
                       icon: LucideIcons.logOut,
@@ -87,6 +113,46 @@ class ProfileScreen extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _showComingSoon(BuildContext context, String feature) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('$feature feature coming soon!'), duration: const Duration(seconds: 1)),
+    );
+  }
+}
+
+// These would normally be in separate files
+class OrdersScreen extends StatelessWidget {
+  const OrdersScreen({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('My Orders')),
+      body: const Center(child: Text('You have no active orders.')),
+    );
+  }
+}
+
+class NotificationsScreen extends StatelessWidget {
+  const NotificationsScreen({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Notifications')),
+      body: const Center(child: Text('No new notifications.')),
+    );
+  }
+}
+
+class SecurityScreen extends StatelessWidget {
+  const SecurityScreen({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Security')),
+      body: const Center(child: Text('Security settings coming soon.')),
     );
   }
 }

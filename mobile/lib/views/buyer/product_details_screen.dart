@@ -8,6 +8,7 @@ import '../../providers/core_providers.dart';
 import '../../core/theme/app_colors.dart';
 import '../../providers/product_provider.dart';
 import '../../models/product_model.dart';
+import '../../providers/wishlist_provider.dart';
 
 class ProductDetailsScreen extends ConsumerWidget {
   final int productId;
@@ -16,11 +17,13 @@ class ProductDetailsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final productAsync = ref.watch(productDetailsProvider(productId));
+    final wishlist = ref.watch(wishlistProvider);
+    final isFavorite = wishlist.contains(productId);
 
     return Scaffold(
       backgroundColor: Colors.white,
       body: productAsync.when(
-        data: (product) => _buildContent(context, product),
+        data: (product) => _buildContent(context, ref, product, isFavorite),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('Error: $err')),
       ),
@@ -32,7 +35,7 @@ class ProductDetailsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, Product product) {
+  Widget _buildContent(BuildContext context, WidgetRef ref, Product product, bool isFavorite) {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
@@ -82,7 +85,11 @@ class ProductDetailsScreen extends ConsumerWidget {
                 backgroundColor: Colors.white,
                 child: IconButton(
                   icon: const Icon(LucideIcons.share2, color: AppColors.textMain, size: 20),
-                  onPressed: () {},
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Sharing functionality coming soon!')),
+                    );
+                  },
                 ),
               ),
             ),
@@ -91,8 +98,23 @@ class ProductDetailsScreen extends ConsumerWidget {
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 child: IconButton(
-                  icon: const Icon(LucideIcons.heart, color: AppColors.textMain, size: 20),
-                  onPressed: () {},
+                  icon: Icon(
+                    isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: isFavorite ? AppColors.error : AppColors.textMain,
+                    size: 20,
+                  ),
+                  onPressed: () {
+                    ref.read(wishlistProvider.notifier).toggleFavorite(product.id);
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(isFavorite ? 'Removed from wishlist!' : 'Added to wishlist!'),
+                        duration: const Duration(seconds: 1),
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor: isFavorite ? AppColors.textMain : AppColors.success,
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
@@ -190,7 +212,11 @@ class ProductDetailsScreen extends ConsumerWidget {
                         ),
                         IconButton(
                           icon: const Icon(LucideIcons.messageSquare, color: AppColors.primary),
-                          onPressed: () {},
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Chat functionality coming soon!')),
+                            );
+                          },
                         ),
                       ],
                     ),

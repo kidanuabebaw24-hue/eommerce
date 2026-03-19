@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../models/product_model.dart';
 import '../core/theme/app_colors.dart';
 import '../views/buyer/product_details_screen.dart';
+import '../providers/wishlist_provider.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends ConsumerWidget {
   final Product product;
   const ProductCard({super.key, required this.product});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isFavorite = ref.watch(wishlistProvider.notifier).isFavorite(product.id);
+    final favoriteProducts = ref.watch(wishlistProvider);
+    final isProductFavorite = favoriteProducts.contains(product.id);
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -49,13 +55,39 @@ class ProductCard extends StatelessWidget {
                   Positioned(
                     top: 12,
                     right: 12,
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
+                    child: GestureDetector(
+                      onTap: () {
+                        ref.read(wishlistProvider.notifier).toggleFavorite(product.id);
+                        final willBeFavorite = !isProductFavorite;
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(willBeFavorite ? 'Added to wishlist!' : 'Removed from wishlist!'),
+                            duration: const Duration(seconds: 1),
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: willBeFavorite ? AppColors.success : AppColors.textMain,
+                          ),
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.1),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          isProductFavorite ? Icons.favorite : Icons.favorite_border,
+                          size: 16,
+                          color: isProductFavorite ? AppColors.error : AppColors.textMuted,
+                        ),
                       ),
-                      child: const Icon(LucideIcons.heart, size: 16, color: AppColors.textMuted),
                     ),
                   ),
                 ],
@@ -77,13 +109,23 @@ class ProductCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    product.categoryName,
-                    style: const TextStyle(
-                      color: AppColors.textMuted,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  Row(
+                    children: [
+                      const Icon(LucideIcons.mapPin, size: 12, color: AppColors.textMuted),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          product.location,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: AppColors.textMuted,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 12),
                   Row(
@@ -97,13 +139,20 @@ class ProductCard extends StatelessWidget {
                           fontSize: 18,
                         ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryLight,
-                          borderRadius: BorderRadius.circular(8),
+                      GestureDetector(
+                        onTap: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Item added to cart!'), duration: Duration(seconds: 1)),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryLight,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(LucideIcons.plus, size: 16, color: AppColors.primary),
                         ),
-                        child: const Icon(LucideIcons.plus, size: 16, color: AppColors.primary),
                       ),
                     ],
                   ),

@@ -3,9 +3,9 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:animate_do/animate_do.dart';
 import '../../core/theme/app_colors.dart';
 import 'home_screen.dart';
+import 'market_screen.dart';
 import '../shared/profile_screen.dart';
 import '../shared/messages_screen.dart';
-import 'wishlist_screen.dart';
 
 class BuyerMainScreen extends StatefulWidget {
   const BuyerMainScreen({super.key});
@@ -19,7 +19,7 @@ class _BuyerMainScreenState extends State<BuyerMainScreen> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-    const WishlistScreen(),
+    const MarketScreen(),
     const MessagesScreen(),
     const ProfileScreen(),
   ];
@@ -52,7 +52,7 @@ class _BuyerMainScreenState extends State<BuyerMainScreen> {
           unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
           items: const [
             BottomNavigationBarItem(icon: Icon(LucideIcons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(LucideIcons.heart), label: 'Wishlist'),
+            BottomNavigationBarItem(icon: Icon(LucideIcons.shoppingBag), label: 'Market'),
             BottomNavigationBarItem(icon: Icon(LucideIcons.messageSquare), label: 'Messages'),
             BottomNavigationBarItem(icon: Icon(LucideIcons.user), label: 'Profile'),
           ],

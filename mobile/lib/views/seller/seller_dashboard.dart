@@ -25,18 +25,24 @@ class SellerDashboard extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Seller Hub',
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                      Text(
-                        'Monitor your shop performance',
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.textMuted),
-                      ),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Seller Hub',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
+                        Text(
+                          'Monitor your shop performance',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.textMuted),
+                        ),
+                      ],
+                    ),
                   ),
                   CircleAvatar(
                     backgroundColor: Colors.white,
@@ -176,10 +182,14 @@ class _StatCard extends StatelessWidget {
             children: [
               Text(
                 value,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 20, color: AppColors.textMain),
               ),
               Text(
                 title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(color: AppColors.textMuted, fontSize: 12, fontWeight: FontWeight.bold),
               ),
             ],

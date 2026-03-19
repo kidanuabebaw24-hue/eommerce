@@ -71,21 +71,28 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
         child: Column(
           children: [
             FadeInDown(
-              child: Container(
-                width: double.infinity,
-                height: 150,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: Colors.grey.shade100, style: BorderStyle.solid),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(LucideIcons.imagePlus, size: 40, color: AppColors.primary),
-                    const SizedBox(height: 8),
-                    const Text('Add Product Images', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.textMuted)),
-                  ],
+              child: GestureDetector(
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Image picker coming soon!')),
+                  );
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(color: Colors.grey.shade100, style: BorderStyle.solid),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(LucideIcons.imagePlus, size: 40, color: AppColors.primary),
+                      const SizedBox(height: 8),
+                      const Text('Add Product Images', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.textMuted)),
+                    ],
+                  ),
                 ),
               ),
             ),
