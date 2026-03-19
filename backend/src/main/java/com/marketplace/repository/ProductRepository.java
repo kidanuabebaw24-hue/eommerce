@@ -26,6 +26,9 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     List<Product> findByOwner(User owner);
     List<Product> findByStatus(Product.ProductStatus status);
     
+    Page<Product> findByTitleContainingIgnoreCase(String title, Pageable pageable);
+    Page<Product> findByCategory_Name(String categoryName, Pageable pageable);
+    
     // New advanced query methods
     
     /**
