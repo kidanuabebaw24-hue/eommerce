@@ -1,0 +1,18 @@
+﻿Analyzing mobile...                                             
+
+   info - 'background' is deprecated and shouldn't be used. Use surface instead. This feature was deprecated after v3.18.0-0.1.pre - lib\core\theme\app_theme.dart:14:9 - deprecated_member_use
+warning - Unused import: 'package:shared_preferences/shared_preferences.dart' - lib\providers\auth_provider.dart:2:8 - unused_import
+   info - Don't use 'BuildContext's across async gaps - lib\views\auth\login_screen.dart:39:22 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\views\auth\login_screen.dart:43:22 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\views\auth\login_screen.dart:49:28 - use_build_context_synchronously
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\views\auth\login_screen.dart:99:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\views\auth\login_screen.dart:101:60 - deprecated_member_use
+warning - Unused import: 'package:animate_do/animate_do.dart' - lib\views\buyer\buyer_main_screen.dart:3:8 - unused_import
+warning - Unused import: 'package:animate_do/animate_do.dart' - lib\views\buyer\home_screen.dart:4:8 - unused_import
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\views\buyer\wishlist_screen.dart:27:49 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\views\common\splash_screen.dart:65:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\views\common\splash_screen.dart:95:39 - deprecated_member_use
+warning - The value of the local variable 'user' isn't used - lib\views\seller\seller_dashboard.dart:14:11 - unused_local_variable
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\views\shared\messages_screen.dart:27:49 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\widgets\product_card.dart:29:35 - deprecated_member_use
+
