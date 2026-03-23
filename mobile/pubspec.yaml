@@ -49,6 +49,7 @@ dependencies:
   badges: any
   cached_network_image: any
   animate_do: any
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:

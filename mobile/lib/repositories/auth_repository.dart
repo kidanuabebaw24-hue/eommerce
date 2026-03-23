@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import '../models/auth_response.dart';
+import '../core/api/api_client.dart';
 
 class AuthRepository {
   AuthRepository();
@@ -12,6 +14,14 @@ class AuthRepository {
   }
 
   Future<void> register(Map<String, dynamic> data) async {
-    await Future.delayed(const Duration(seconds: 1));
+    final dio = Dio(BaseOptions(baseUrl: ApiClient.baseUrl));
+    try {
+      await dio.post('/auth/register', data: data);
+    } catch (e) {
+      if (e is DioException) {
+        throw Exception(e.response?.data['message'] ?? 'Registration failed');
+      }
+      rethrow;
+    }
   }
 }
