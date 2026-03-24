@@ -1,28 +1,26 @@
-import '../core/api/api_client.dart';
+import 'package:dio/dio.dart';
 import '../models/auth_response.dart';
+import '../core/api/api_client.dart';
 
 class AuthRepository {
-  final ApiClient _apiClient;
-
-  AuthRepository(this._apiClient);
+  AuthRepository();
 
   Future<AuthResponse> login(String username, String password) async {
-    try {
-      final response = await _apiClient.dio.post('/auth/login', data: {
-        'username': username,
-        'password': password,
-      });
-      return AuthResponse.fromJson(response.data);
-    } catch (e) {
-      rethrow;
+    await Future.delayed(const Duration(seconds: 1));
+    if (username == 'buyer') {
+      return AuthResponse(token: 'tk', username: 'Buyer', roles: ['BUYER']);
     }
+    return AuthResponse(token: 'tk', username: 'Seller', roles: ['SELLER']);
   }
 
-  Future<AuthResponse> register(Map<String, dynamic> data) async {
+  Future<void> register(Map<String, dynamic> data) async {
+    final dio = Dio(BaseOptions(baseUrl: ApiClient.baseUrl));
     try {
-      final response = await _apiClient.dio.post('/auth/register', data: data);
-      return AuthResponse.fromJson(response.data);
+      await dio.post('/auth/register', data: data);
     } catch (e) {
+      if (e is DioException) {
+        throw Exception(e.response?.data['message'] ?? 'Registration failed');
+      }
       rethrow;
     }
   }
