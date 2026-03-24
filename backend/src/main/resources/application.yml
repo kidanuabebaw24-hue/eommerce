@@ -43,7 +43,7 @@ app:
     expiration-ms: 86400000 # 24 hours
   ai:
     provider: gemini
-    api-key: AIzaSyBBoAQbXu3Nd7aovVOlnxSMA6P3tO6CpMU
+    api-key: AIzaSyCpKhs0sKbx2O7J7igILEnWRrddNs3m6JQ
     model: gemini-2.0-flash
     api-url: https://generativelanguage.googleapis.com/v1beta/models/
 

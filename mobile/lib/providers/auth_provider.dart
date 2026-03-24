@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/auth_response.dart';
+import '../repositories/auth_repository.dart';
+import 'core_providers.dart';
 
 class AuthState {
   final AuthResponse? user;
@@ -19,45 +21,58 @@ class AuthState {
 }
 
 class AuthNotifier extends StateNotifier<AuthState> {
-  AuthNotifier() : super(AuthState());
+  final AuthRepository _repository;
+
+  AuthNotifier(this._repository) : super(AuthState());
 
   Future<bool> login(String username, String password) async {
     state = state.copyWith(isLoading: true, error: null);
     
-    // Simulate API delay
-    await Future.delayed(const Duration(seconds: 2));
-
-    // Mock Logic for UI only
-    if (username == 'buyer' && password == 'password') {
-      final user = AuthResponse(
-        token: 'mock_token_buyer',
-        username: 'Sample Buyer',
-        roles: ['BUYER'],
-      );
+    try {
+      final user = await _repository.login(username, password);
+      
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', user.token);
+      
       state = state.copyWith(user: user, isLoading: false);
       return true;
-    } else if (username == 'seller' && password == 'password') {
-      final user = AuthResponse(
-        token: 'mock_token_seller',
-        username: 'Sample Seller',
-        roles: ['SELLER'],
-      );
-      state = state.copyWith(user: user, isLoading: false);
-      return true;
-    } else {
+    } catch (e) {
       state = state.copyWith(
         isLoading: false, 
-        error: 'Invalid credentials. Use buyer/password or seller/password.'
+        error: 'Login failed: ${e.toString()}'
+      );
+      return false;
+    }
+  }
+
+  Future<bool> register(Map<String, dynamic> data) async {
+    state = state.copyWith(isLoading: true, error: null);
+    
+    try {
+      final user = await _repository.register(data);
+      
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', user.token);
+      
+      state = state.copyWith(user: user, isLoading: false);
+      return true;
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false, 
+        error: 'Registration failed: ${e.toString()}'
       );
       return false;
     }
   }
 
   Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
     state = AuthState();
   }
 }
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  return AuthNotifier();
+  final repository = ref.watch(authRepositoryProvider);
+  return AuthNotifier(repository);
 });

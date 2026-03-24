@@ -33,14 +33,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
     setState(() => _isLoading = true);
     try {
-      await ref.read(authRepositoryProvider).register({
+      final success = await ref.read(authProvider.notifier).register({
         'fullname': _fullnameController.text,
         'username': _usernameController.text,
         'email': _emailController.text,
         'password': _passwordController.text,
         'roles': [_selectedRole],
       });
-      if (mounted) {
+      
+      if (success && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Registration successful! Please login.')),
         );

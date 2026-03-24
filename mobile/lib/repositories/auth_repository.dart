@@ -1,17 +1,29 @@
+import '../core/api/api_client.dart';
 import '../models/auth_response.dart';
 
 class AuthRepository {
-  AuthRepository();
+  final ApiClient _apiClient;
+
+  AuthRepository(this._apiClient);
 
   Future<AuthResponse> login(String username, String password) async {
-    await Future.delayed(const Duration(seconds: 1));
-    if (username == 'buyer') {
-      return AuthResponse(token: 'tk', username: 'Buyer', roles: ['BUYER']);
+    try {
+      final response = await _apiClient.dio.post('/auth/login', data: {
+        'username': username,
+        'password': password,
+      });
+      return AuthResponse.fromJson(response.data);
+    } catch (e) {
+      rethrow;
     }
-    return AuthResponse(token: 'tk', username: 'Seller', roles: ['SELLER']);
   }
 
-  Future<void> register(Map<String, dynamic> data) async {
-    await Future.delayed(const Duration(seconds: 1));
+  Future<AuthResponse> register(Map<String, dynamic> data) async {
+    try {
+      final response = await _apiClient.dio.post('/auth/register', data: data);
+      return AuthResponse.fromJson(response.data);
+    } catch (e) {
+      rethrow;
+    }
   }
 }

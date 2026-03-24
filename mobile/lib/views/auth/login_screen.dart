@@ -90,22 +90,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.textMuted),
                 ),
               ),
-              const SizedBox(height: 12),
-              FadeInLeft(
-                delay: const Duration(milliseconds: 300),
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.amber.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.amber.withOpacity(0.3)),
-                  ),
-                  child: const Text(
-                    'Demo Hint: Use "buyer" or "seller" with password "password"',
-                    style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold, fontSize: 12),
-                  ),
-                ),
-              ),
               const SizedBox(height: 40),
               FadeInUp(
                 delay: const Duration(milliseconds: 400),
